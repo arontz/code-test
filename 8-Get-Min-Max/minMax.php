@@ -8,4 +8,8 @@ for ($i = 0; $i < 5; $i++) {
     $numbers[] = (int)$input; // Convert to integer and store in array
 }
 
-echo json_encode($numbers);
+$min = min($numbers);
+$max = max($numbers);
+
+echo "\nmin number : $min \n";
+echo "max number : $max \n";

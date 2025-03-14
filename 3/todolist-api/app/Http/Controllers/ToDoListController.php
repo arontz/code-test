@@ -12,15 +12,9 @@ class ToDoListController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $todolist = ToDoList::get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($todolist);
     }
 
     /**
@@ -28,38 +22,49 @@ class ToDoListController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'todo' => 'required|string|max:255',
+            'is_done' => 'boolean',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ToDoList $toDoList)
-    {
-        //
+        $todolist = ToDoList::create([
+            'todo' => $request->todo,
+            'is_done' => $request->is_done,
+        ]);
+
+        return response()->json([
+            'message' => 'ToDoList Created successfully',
+            'ToDoList' => $todolist,
+        ], 201);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ToDoList $toDoList)
+    public function edit(Request $request, $id)
     {
-        //
-    }
+        $todolist = ToDoList::findOrFail($id);
+        $request->validate([
+            'todo' => 'required|string|max:255',
+            'is_done' => 'boolean',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ToDoList $toDoList)
-    {
-        //
+        $todolist->update(['todo' => $request->todo,
+                            'is_done' => $request->is_done]);
+
+        return response()->json(['message' => 'ToDoList updated successfully', 'ToDoList' => $todolist]);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ToDoList $toDoList)
+    public function destroy($id)
     {
-        //
+        $todolist = ToDoList::findOrFail($id);
+
+        $todolist->delete();
+    
+        return response()->json(['message' => 'todolist deleted successfully']);
     }
 }

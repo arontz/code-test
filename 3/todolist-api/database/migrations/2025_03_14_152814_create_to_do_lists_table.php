@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('to_do_lists', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('todo');
+            $table->boolean('is_done')->default(false);
         });
     }
 
